@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Wallet, ConnectButton } from '@stellar/wallet-sdk'
+import { Wallet } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export function WalletConnect() {
@@ -11,9 +11,9 @@ export function WalletConnect() {
     setIsConnecting(true)
     try {
       // Mock wallet connection - replace with actual Stellar wallet integration
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
       toast.success('Wallet connected successfully!')
-    } catch (error) {
+    } catch {
       toast.error('Failed to connect wallet')
     } finally {
       setIsConnecting(false)
@@ -22,6 +22,7 @@ export function WalletConnect() {
 
   return (
     <button
+      type="button"
       onClick={handleConnect}
       disabled={isConnecting}
       className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
