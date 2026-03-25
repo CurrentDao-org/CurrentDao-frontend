@@ -9,7 +9,12 @@ Built with **Next.js**, **TypeScript**, **Tailwind CSS**, and the App Router.
 - User interface for energy trading
 - Integration with backend APIs
 - Authentication and user management
-- Responsive design with Tailwind CSS
+- **Energy Producer Dashboard**: Real-time tracking of production and earnings.
+- **Real-time Visualization**: Live energy price charts and monthly portfolio metrics.
+- **WebSocket Integration**: Live data updates every 5 seconds for dynamic monitoring.
+- **Responsive & Accessible**: Fully optimized for mobile and desktop (WCAG 2.1 AA compliant).
+- **Dark Mode Support**: Seamless theme switching for better user experience.
+- **Robust Error Handling**: Graceful failure modes and loading skeletons.
 
 ## Getting Started
 
