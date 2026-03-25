@@ -115,12 +115,22 @@ export default function HomePage() {
         </motion.div>
       </div>
 
+      {/* Market Forecasting feature */}
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35 }}
+        className="py-12"
+      >
+        <MarketForecasting />
+      </motion.section>
+
       {/* Features Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="py-12"
+        className="py-12 pb-24"
       >
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
           Why Choose CurrentDao?
