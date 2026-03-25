@@ -14,9 +14,10 @@ import {
 import { EnergyTradingCard } from '@/components/EnergyTradingCard'
 import { DAOVotingCard } from '@/components/DAOVotingCard'
 import { MobileWallet } from '@/components/mobile/MobileWallet'
-import { BiometricAuth } from '@/components/security/BiometricAuth'
 import { StatsCard } from '@/components/StatsCard'
 import { WalletConnect } from '@/components/WalletConnect'
+import { ServiceWorkerRegistration } from '@/offline/components/ServiceWorkerRegistration'
+import { OfflineIndicator } from '@/offline/components/OfflineIndicator'
 
 export default function HomePage() {
   const { data: stats } = useQuery({
@@ -34,6 +35,8 @@ export default function HomePage() {
 
   return (
     <div className="space-y-8">
+      <ServiceWorkerRegistration />
+      <OfflineIndicator />
       {/* Hero Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
@@ -80,7 +83,7 @@ export default function HomePage() {
         />
         <StatsCard
           title="DAO Proposals"
-          value={stats?.totalProposals?.toLocaleString() || '0'}
+          value={stats?.totalProposals.toString() || '0'}
           icon={Shield}
           color="text-purple-600"
           bgColor="bg-purple-100"
@@ -97,6 +100,7 @@ export default function HomePage() {
       {/* Main Features */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <motion.div
+          id="trading"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
@@ -105,6 +109,7 @@ export default function HomePage() {
         </motion.div>
         
         <motion.div
+          id="dao"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
@@ -113,28 +118,22 @@ export default function HomePage() {
         </motion.div>
       </div>
 
-      <motion.div
+      {/* Market Forecasting feature */}
+      <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
+        className="py-12"
       >
-        <BiometricAuth />
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-      >
-        <MobileWallet />
-      </motion.div>
+        <MarketForecasting />
+      </motion.section>
 
       {/* Features Section */}
       <motion.section 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45 }}
-        className="py-12"
+        transition={{ delay: 0.4 }}
+        className="py-12 pb-24"
       >
         <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
           Why Choose CurrentDao?
@@ -146,7 +145,7 @@ export default function HomePage() {
             </div>
             <h3 className="text-xl font-semibold mb-2">Global Access</h3>
             <p className="text-gray-600">
-              Trade energy anywhere in the world with Stellar&apos;s fast, low-cost network
+              Trade energy anywhere in the world with the Stellar network&apos;s fast, low-cost rails
             </p>
           </div>
           

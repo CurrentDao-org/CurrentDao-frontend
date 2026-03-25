@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Zap, Menu, X, Wallet } from 'lucide-react'
+import { Zap, Menu, X, Wallet, Globe } from 'lucide-react'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -23,8 +23,15 @@ export function Navbar() {
             <a href="#trading" className="text-gray-600 hover:text-gray-900 transition-colors">
               Energy Trading
             </a>
+            <a href="#mobile-wallets" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Mobile Wallets
+            </a>
             <a href="#dao" className="text-gray-600 hover:text-gray-900 transition-colors">
               DAO Governance
+            </a>
+            <a href="/cross-border" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+              <Globe className="w-4 h-4" />
+              Cross-Border
             </a>
             <a href="#portfolio" className="text-gray-600 hover:text-gray-900 transition-colors">
               Portfolio
@@ -62,8 +69,15 @@ export function Navbar() {
               <a href="#trading" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Energy Trading
               </a>
+              <a href="#mobile-wallets" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Mobile Wallets
+              </a>
               <a href="#dao" className="text-gray-600 hover:text-gray-900 transition-colors">
                 DAO Governance
+              </a>
+              <a href="/cross-border" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+                <Globe className="w-4 h-4" />
+                Cross-Border
               </a>
               <a href="#portfolio" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Portfolio

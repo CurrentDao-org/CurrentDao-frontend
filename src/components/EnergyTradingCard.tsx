@@ -1,11 +1,43 @@
 'use client'
 
 import { useState } from 'react'
-import { Zap, TrendingUp, Clock } from 'lucide-react'
+import { Zap, TrendingUp, Clock, WifiOff } from 'lucide-react'
+import { useOfflineMode } from '../offline/hooks/useOfflineMode'
+import { toast } from 'react-hot-toast'
 
 export function EnergyTradingCard() {
   const [amount, setAmount] = useState('')
   const [price, setPrice] = useState('')
+  const { isOnline, addTrade } = useOfflineMode()
+
+  const handleTrade = async (type: 'BUY' | 'SELL') => {
+    if (!amount || !price) {
+      toast.error('Please enter amount and price')
+      return
+    }
+
+    try {
+      await addTrade({
+        type,
+        amount: parseFloat(amount),
+        price: parseFloat(price)
+      })
+
+      if (isOnline) {
+        toast.success(`${type === 'BUY' ? 'Buy' : 'Sell'} order submitted successfully`)
+      } else {
+        toast.success(`${type === 'BUY' ? 'Buy' : 'Sell'} order queued (Offline Mode)`, {
+          icon: '🔄',
+          duration: 4000
+        })
+      }
+      
+      setAmount('')
+      setPrice('')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to place trade')
+    }
+  }
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
@@ -61,17 +93,31 @@ export function EnergyTradingCard() {
         </div>
 
         <div className="flex gap-3">
-          <button className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
+          <button 
+            onClick={() => handleTrade('BUY')}
+            className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+          >
             Buy Energy
           </button>
-          <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+          <button 
+            onClick={() => handleTrade('SELL')}
+            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+          >
             Sell Energy
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <Clock className="w-4 h-4" />
-          <span>Last trade: 2 minutes ago</span>
+        <div className="flex items-center justify-between text-sm text-gray-500">
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            <span>Last trade: 2 minutes ago</span>
+          </div>
+          {!isOnline && (
+            <div className="flex items-center gap-1 text-orange-600 font-medium">
+              <WifiOff className="w-4 h-4" />
+              <span>Offline Mode</span>
+            </div>
+          )}
         </div>
       </div>
     </div>
