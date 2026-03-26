@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Zap, Menu, X, Wallet, Globe } from 'lucide-react'
+import { ThemeToggle } from './theme/ThemeToggle'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -46,6 +47,7 @@ export function Navbar() {
 
           {/* Wallet Connect & Mobile Menu */}
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <button className="hidden sm:flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
               <Wallet className="w-4 h-4" />
               Connect Wallet

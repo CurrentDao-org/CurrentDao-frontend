@@ -4,6 +4,7 @@ import { Providers } from './providers'
 import { Navbar } from '@/components/Navbar'
 import { Toaster } from 'react-hot-toast'
 import TutorialFlow from '@/components/onboarding/TutorialFlow'
+import { ThemeProvider } from '@/hooks/useTheme'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,16 +21,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <div className="min-h-screen bg-gray-50">
-            <Navbar />
-            <main className="container mx-auto px-4 py-8">
-              {children}
-            </main>
-            <Toaster position="top-right" />
-            <TutorialFlow />
-          </div>
-        </Providers>
+        <ThemeProvider>
+          <Providers>
+            <div className="min-h-screen bg-background text-foreground">
+              <Navbar />
+              <main className="container mx-auto px-4 py-8">
+                {children}
+              </main>
+              <Toaster position="top-right" />
+              <TutorialFlow />
+            </div>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   )
