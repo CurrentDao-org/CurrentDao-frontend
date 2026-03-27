@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { WebSocketChatMessage } from '../types/chat';
 
 interface WebSocketHookProps<T> {
   url?: string;
@@ -22,6 +23,16 @@ export function useWebSocket<T>({
     setData(receivedData);
     if (onMessage) onMessage(receivedData);
   }, [onMessage]);
+
+  const sendMessage = useCallback((message: any) => {
+    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify(message));
+    }
+  }, []);
+
+  const sendChatMessage = useCallback((message: WebSocketChatMessage) => {
+    sendMessage(message);
+  }, [sendMessage]);
 
   useEffect(() => {
     if (url) {
@@ -72,5 +83,12 @@ export function useWebSocket<T>({
     }
   }, [url, mockInterval, mockDataGenerator, handleMessage]);
 
-  return { data, isConnected, error, socket: socketRef.current };
+  return { 
+    data, 
+    isConnected, 
+    error, 
+    socket: socketRef.current,
+    sendMessage,
+    sendChatMessage
+  };
 }
