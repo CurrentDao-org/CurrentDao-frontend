@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LayoutDashboard, ShoppingCart, Settings, Terminal, WifiOff, Bell, User, ShieldCheck, ArrowRight } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Settings, Terminal, WifiOff, Bell, User, ShieldCheck, ArrowRight, Wallet } from 'lucide-react';
 import SwipeNavigation from '@/components/mobile/SwipeNavigation';
 import MobileTradingFlow from '@/components/mobile/MobileTradingFlow';
 import { useOfflineSupport } from '@/hooks/useOfflineSupport';

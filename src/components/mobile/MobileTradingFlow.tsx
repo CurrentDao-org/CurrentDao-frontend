@@ -121,7 +121,7 @@ const MobileTradingFlow: React.FC<MobileTradingFlowProps> = ({ onComplete }) => 
             <div className="flex items-start gap-4 p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20">
                <AlertTriangle className="h-6 w-6 text-amber-500 flex-shrink-0" />
                <p className="text-xs font-medium text-amber-500 leading-relaxed">
-                 By confirming this trade, you agree to CurrentDao's decentralized trading policies. This action is irreversible on the blockchain.
+                 By confirming this trade, you agree to CurrentDao&apos;s decentralized trading policies. This action is irreversible on the blockchain.
                </p>
             </div>
 

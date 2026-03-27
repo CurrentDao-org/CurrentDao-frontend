@@ -1,5 +1,23 @@
 import '@testing-library/jest-dom'
 
+// React 18 concurrent features in tests
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true
+
+// jsdom does not always define Notification; Push API tests need a minimal stub
+if (typeof globalThis.Notification === 'undefined') {
+  type Perm = 'default' | 'denied' | 'granted'
+  class NotificationStub {
+    static permission: Perm = 'default'
+
+    static requestPermission(): Promise<Perm> {
+      return Promise.resolve(NotificationStub.permission)
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(globalThis as any).Notification = NotificationStub
+}
+
 // Mock ResizeObserver
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
@@ -17,10 +35,10 @@ jest.mock('html2canvas', () =>
 )
 
 // Mock TextEncoder for Stellar SDK
-global.TextEncoder = require('util').TextEncoder;
+global.TextEncoder = require('util').TextEncoder
 
 // Mock TextDecoder for Stellar SDK
-global.TextDecoder = require('util').TextDecoder;
+global.TextDecoder = require('util').TextDecoder
 
 // Mock localStorage
 const localStorageMock = (function () {

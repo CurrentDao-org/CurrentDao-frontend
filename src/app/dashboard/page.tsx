@@ -55,7 +55,9 @@ export default function DashboardPage() {
             </button>
             <div className="hidden items-center gap-2 sm:flex">
               <span className="relative flex h-2 w-2">
-                <span={`absolute inline-flex h-full w-full rounded-full ${isConnected ? 'bg-emerald-400 animate-ping opacity-75' : 'bg-red-400'}`}></span>
+                <span
+                  className={`absolute inline-flex h-full w-full rounded-full ${isConnected ? 'bg-emerald-400 animate-ping opacity-75' : 'bg-red-400'}`}
+                ></span>
                 <span className={`relative inline-flex h-2 w-2 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
               </span>
               <span className="text-xs font-medium text-muted-foreground">

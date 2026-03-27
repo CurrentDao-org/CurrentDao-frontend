@@ -18,6 +18,7 @@ import { StatsCard } from '@/components/StatsCard'
 import { WalletConnect } from '@/components/WalletConnect'
 import { ServiceWorkerRegistration } from '@/offline/components/ServiceWorkerRegistration'
 import { OfflineIndicator } from '@/offline/components/OfflineIndicator'
+import { MarketForecasting } from '@/components/forecasting/MarketForecasting'
 
 export default function HomePage() {
   const { data: stats } = useQuery({

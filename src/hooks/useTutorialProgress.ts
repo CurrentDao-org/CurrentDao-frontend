@@ -40,7 +40,7 @@ export function useTutorialProgress() {
     updateState((s) => ({
       ...s,
       currentStepIndex: s.currentStepIndex + 1,
-      completedSteps: [...new Set([...s.completedSteps, stepId])],
+      completedSteps: Array.from(new Set([...s.completedSteps, stepId])),
     }));
   }, [updateState]);
 

@@ -1,9 +1,9 @@
 // jest.config.js
-const nextJest = require('next/jest');
+const nextJest = require('next/jest')
 
 const createJestConfig = nextJest({
   dir: './',
-});
+})
 
 const customJestConfig = {
   moduleDirectories: ['node_modules', '<rootDir>/src'],
@@ -15,6 +15,7 @@ const customJestConfig = {
   transform: {
     '^.+\\.(ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
   },
-};
+  coverageProvider: 'v8',
+}
 
-module.exports = createJestConfig(customJestConfig);
+module.exports = createJestConfig(customJestConfig)

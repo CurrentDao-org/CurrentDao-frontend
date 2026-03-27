@@ -1,5 +1,5 @@
 import '../globals.css';
-import '../styles/mobile.css';
+import '../../styles/mobile.css';
 import { Inter } from 'next/font/google';
 import { Providers } from '../providers';
 
