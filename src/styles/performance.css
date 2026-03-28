@@ -1,0 +1,100 @@
+/* Lazy loading fade-in */
+.lazy-fade-in {
+  animation: lazyFadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes lazyFadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(4px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Skeleton shimmer */
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base, hsl(var(--muted) / 0.5)) 25%,
+    var(--skeleton-highlight, hsl(var(--muted) / 0.3)) 50%,
+    var(--skeleton-base, hsl(var(--muted) / 0.5)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { 
+    background-position: 200% 0; 
+  }
+  100% { 
+    background-position: -200% 0; 
+  }
+}
+
+/* Content visibility for off-screen sections */
+.lazy-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .lazy-fade-in,
+  .skeleton-shimmer {
+    animation: none;
+  }
+  
+  .lazy-fade-in {
+    opacity: 1;
+  }
+  
+  .skeleton-shimmer {
+    background: var(--skeleton-base, hsl(var(--muted) / 0.5));
+  }
+}
+
+/* Dark mode adjustments */
+.dark .skeleton-shimmer {
+  --skeleton-base: hsl(var(--muted) / 0.3);
+  --skeleton-highlight: hsl(var(--muted) / 0.2);
+}
+
+/* Light mode defaults */
+:root {
+  --skeleton-base: hsl(var(--muted) / 0.5);
+  --skeleton-highlight: hsl(var(--muted) / 0.3);
+}
+
+/* Font display optimization */
+@font-face {
+  font-display: swap;
+}
+
+/* Performance: contain layout for complex components */
+.contain-layout {
+  contain: layout style;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Performance: content-visibility for below-fold content */
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
+/* Image loading optimization */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}
