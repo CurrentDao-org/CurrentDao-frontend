@@ -40,6 +40,10 @@ export function Navbar() {
             <a href="/pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
               Dynamic Pricing
             </a>
+            <a href="/location" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+              <Zap className="w-4 h-4 text-green-600" />
+              Local Trading
+            </a>
             <a href="#docs" className="text-gray-600 hover:text-gray-900 transition-colors">
               Documentation
             </a>
@@ -89,6 +93,10 @@ export function Navbar() {
               </a>
               <a href="/pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Dynamic Pricing
+              </a>
+              <a href="/location" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1">
+                <Zap className="w-4 h-4 text-green-600" />
+                Local Trading
               </a>
               <a href="#docs" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Documentation
