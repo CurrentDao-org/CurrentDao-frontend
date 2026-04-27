@@ -1,26 +1,100 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
-
-// Bundle Analyzer - uncomment when @next/bundle-analyzer is installed
-// const withBundleAnalyzer = require('@next/bundle-analyzer')({
-//   enabled: process.env.ANALYZE === 'true',
-// })
-
 const nextConfig = {
-  // --- EXISTING CONFIG PRESERVED ---
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  
+  // Image optimization with WebP and AVIF support
   images: {
     domains: ['localhost'],
-    // --- IMAGE OPTIMIZATION ---
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30,  // 30 days
+    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     dangerouslyAllowSVG: false,
   },
 
-  // --- COMPRESSION ---
-  compress: true,
+  // Experimental features for performance
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
+    largePageDataBytes: 128 * 1000, // 128KB
+    optimizePackageImports: [
+      'lucide-react',
+      'recharts',
+      'framer-motion',
+      '@stellar/stellar-sdk',
+    ],
+  },
 
-  // --- POWER PACK HEADERS ---
+  // Advanced bundle optimization
+  webpack: (config, { isServer, dev }) => {
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          framework: {
+            name: 'framework',
+            chunks: 'all',
+            enforce: true,
+            priority: 40,
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+          },
+          lib: {
+            name: 'lib',
+            chunks: 'all',
+            enforce: true,
+            priority: 30,
+            test: /[\\/]node_modules[\\/](@next|next)[\\/]/,
+          },
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            enforce: true,
+            priority: 20,
+          },
+          // Heavy vendor libraries
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              const packageName = module.context.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+              )?.[1]
+              return `npm.${packageName?.replace('@', '')}` 
+            },
+            chunks: 'all',
+            priority: 10,
+          },
+          // Shared UI components
+          shared: {
+            name: 'shared',
+            chunks: 'all',
+            enforce: true,
+            priority: 5,
+            test: /[\\/]node_modules[\\/](lucide-react|recharts|framer-motion)[\\/]/,
+          },
+        },
+      };
+
+      // Tree shaking optimizations
+      config.optimization.usedExports = true;
+      config.optimization.sideEffects = false;
+    }
+
+    // Reduce memory usage
+    config.optimization.minimize = !dev;
+    
+    return config;
+  },
+
+  // Headers for caching and security
   async headers() {
     return [
       {
@@ -48,54 +122,19 @@ const nextConfig = {
           { key: 'X-Content-Type-Options', value: 'nosniff' },
         ],
       },
-    ]
+    ];
   },
 
-  // --- WEBPACK BUNDLE SPLITTING ---
-  webpack(config, { isServer }) {
-    if (!isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          // Separate heavy vendor chunks
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name(module) {
-              const packageName = module.context.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-              )?.[1]
-              return `npm.${packageName?.replace('@', '')}` 
-            },
-            chunks: 'all',
-            priority: -10,
-          },
-          // Common components chunk
-          commons: {
-            name: 'commons',
-            minChunks: 2,
-            chunks: 'all',
-            priority: -20,
-          },
-        },
-      }
-    }
-    return config
+  // Redirects for performance
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/',
+        permanent: true,
+      },
+    ];
   },
+};
 
-  // --- EXPERIMENTAL (Next.js 14 compatible) ---
-  experimental: {
-    // CSS optimization - inlines critical CSS
-    optimizeCss: true,
-    // Optimize package imports for heavy libraries
-    optimizePackageImports: [
-      'lucide-react',
-      'recharts',
-      'framer-motion',
-      '@stellar/stellar-sdk',
-    ],
-  },
-}
-
-// Export config with optional bundle analyzer wrapper
-// module.exports = withBundleAnalyzer(nextConfig)
-module.exports = nextConfig
+module.exports = withBundleAnalyzer(nextConfig);

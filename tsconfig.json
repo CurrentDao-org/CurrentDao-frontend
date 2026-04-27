@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "es2017",
     "lib": [
       "dom",
       "dom.iterable",
       "es2017"
     ],
+=======
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6"],
+>>>>>>> 83d7048 (feat: Implement comprehensive performance optimizations)
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,11 +22,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+<<<<<<< HEAD
     "types": [
       "jest",
       "jest-dom",
       "node"
     ],
+=======
+>>>>>>> 83d7048 (feat: Implement comprehensive performance optimizations)
     "plugins": [
       {
         "name": "next"
@@ -29,6 +37,7 @@
     ],
     "baseUrl": ".",
     "paths": {
+<<<<<<< HEAD
       "@/*": [
         "./src/*"
       ]
@@ -44,3 +53,16 @@
     "node_modules"
   ]
 }
+=======
+      "@/*": ["./*"],
+      "@/components/*": ["./components/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/types/*": ["./types/*"],
+      "@/services/*": ["./services/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+>>>>>>> 83d7048 (feat: Implement comprehensive performance optimizations)

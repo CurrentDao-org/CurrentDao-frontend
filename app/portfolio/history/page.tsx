@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePortfolioAnalytics } from '../../../hooks/usePortfolioAnalytics';
-import { TradingHistory } from '../../../components/portfolio/TradingHistory';
-import { PerformanceMetrics } from '../../../components/portfolio/PerformanceMetrics';
+import { LazyComponent, LazyPortfolioMetrics, LazyTradingHistory } from '../../../components/lazy/LazyComponent';
 import { ProfitLoss } from '../../../components/portfolio/ProfitLoss';
 import { AssetAllocation } from '../../../components/portfolio/AssetAllocation';
 import { TradingStatistics } from '../../../components/portfolio/TradingStatistics';
 import { ExportOptions } from '../../../types/portfolio';
+import { performanceMonitor } from '../../../utils/performance/monitoring';
+import { portfolioApiCache } from '../../../services/cache/api-cache';
 
 export default function PortfolioHistoryPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'history' | 'metrics' | 'pnl' | 'allocation' | 'statistics'>('overview');
@@ -16,6 +17,26 @@ export default function PortfolioHistoryPage() {
     autoRefresh: true,
     refreshInterval: 30000
   });
+
+  // Performance monitoring
+  useEffect(() => {
+    // Prefetch data for better performance
+    if (portfolio) {
+      portfolioApiCache.prefetchPortfolioData('default');
+    }
+
+    // Track page load performance
+    const endMeasure = performanceMonitor['recordCustomMetric'].bind(performanceMonitor);
+    const measureId = 'portfolio-page-load';
+    endMeasure(measureId, Date.now() - performance.now());
+  }, [portfolio]);
+
+  // Invalidate cache when trades are updated
+  useEffect(() => {
+    if (trades && trades.length > 0) {
+      portfolioApiCache.invalidatePattern('/api/portfolio/');
+    }
+  }, [trades]);
 
   const handleExport = async (format: 'csv' | 'pdf' | 'json' | 'excel') => {
     if (!analytics) return;
@@ -240,22 +261,39 @@ export default function PortfolioHistoryPage() {
             )}
 
             {/* Performance Metrics */}
-            {performance && <PerformanceMetrics metrics={performance} />}
+            {performance && (
+              <LazyComponent
+                loader={() => import('../../../components/portfolio/PerformanceMetrics').then(module => ({ default: module.PerformanceMetrics }))}
+                fallback={<div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>}
+              >
+                <LazyPortfolioMetrics metrics={performance} />
+              </LazyComponent>
+            )}
           </div>
         )}
 
         {activeTab === 'history' && (
-          <TradingHistory
-            trades={trades}
-            onAddTrade={addTrade}
-            onUpdateTrade={updateTrade}
-            onDeleteTrade={deleteTrade}
-            loading={loading}
-          />
+          <LazyComponent
+            loader={() => import('../../../components/portfolio/TradingHistory').then(module => ({ default: module.TradingHistory }))}
+            fallback={<div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>}
+          >
+            <LazyTradingHistory
+              trades={trades}
+              onAddTrade={addTrade}
+              onUpdateTrade={updateTrade}
+              onDeleteTrade={deleteTrade}
+              loading={loading}
+            />
+          </LazyComponent>
         )}
 
         {activeTab === 'metrics' && performance && (
-          <PerformanceMetrics metrics={performance} />
+          <LazyComponent
+            loader={() => import('../../../components/portfolio/PerformanceMetrics').then(module => ({ default: module.PerformanceMetrics }))}
+            fallback={<div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>}
+          >
+            <LazyPortfolioMetrics metrics={performance} />
+          </LazyComponent>
         )}
 
         {activeTab === 'pnl' && profitLoss && (
