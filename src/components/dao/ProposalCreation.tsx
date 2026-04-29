@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { RichTextEditor } from './RichTextEditor';
 import {
   FileText,
   Upload,
@@ -431,11 +432,15 @@ export function ProposalCreation({
 
       <div>
         <label className="block text-sm font-medium mb-2">Content *</label>
-        <textarea
-          className="w-full p-3 border rounded-lg min-h-[400px]"
-          placeholder="Enter detailed proposal content (supports Markdown)"
+              <RichTextEditor
           value={formData.content}
-          onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+          onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+          placeholder="Enter detailed proposal content..."
+          maxLength={5000}
+          height="400px"
+          previewMode="tab"
+          autoSaveKey="dao-proposal-content"
+          onFileUpload={(files) => handleFileUpload(files)}
         />
         {formData.content && (
           <p className="text-sm text-muted-foreground mt-1">
