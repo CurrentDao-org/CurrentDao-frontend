@@ -13,6 +13,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
+/**
+ * Component to display user's portfolio balances,
+ * including WATT and XLM as primary assets.
+ */
 export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
   balance,
   isLoading = false,
@@ -24,12 +28,12 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
 
   const getWATTBalance = () => {
-    const wattBalance = balance.find(b => b.asset_code === 'WATT');
+    const wattBalance = balance.find(assetBalance => assetBalance.asset_code === 'WATT');
     return wattBalance?.balance || '0';
   };
 
   const getXLMBalance = () => {
-    const xlmBalance = balance.find(b => b.asset_code === 'XLM');
+    const xlmBalance = balance.find(assetBalance => assetBalance.asset_code === 'XLM');
     return xlmBalance?.balance || '0';
   };
 
@@ -37,6 +41,9 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({
     return balance.filter(b => b.asset_code !== 'WATT' && b.asset_code !== 'XLM');
   };
 
+  /**
+   * Returns the appropriate icon for a given asset code.
+   */
   const getAssetIcon = (assetCode: string) => {
     switch (assetCode) {
       case 'WATT':
