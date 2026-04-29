@@ -32,6 +32,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
   showVoiceInterface = true,
   className = ''
 }) => {
+  // Main state for the AI assistant
   const [state, setState] = useState<AIAssistantState>({
     isActive: false,
     isProcessing: false,
@@ -66,15 +67,15 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize AI service
+  // Initialize AI service when enabled or user profile changes
   useEffect(() => {
     if (enabled && userProfile) {
-      setState(prev => ({ ...prev, userProfile, isActive: true }));
+      setState(previousState => ({ ...previousState, userProfile, isActive: true }));
       initializeAI();
     }
   }, [enabled, userProfile]);
 
-  // Real-time updates every 30 seconds
+  // Real-time updates every 30 seconds to keep market data fresh
   useEffect(() => {
     if (!enabled || !state.isActive) return;
 
@@ -85,21 +86,21 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
     return () => clearInterval(interval);
   }, [enabled, state.isActive]);
 
-  // Auto-scroll messages
+  // Auto-scroll messages container to the bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const initializeAI = async () => {
     try {
-      setState(prev => ({ ...prev, isProcessing: true }));
+      setState(previousState => ({ ...previousState, isProcessing: true }));
       
-      // Generate initial recommendation
+      // Generate initial recommendation based on current market data
       const marketData = await aiService.current.getRealTimeAnalysis(['BTC', 'ETH', 'ENERGY']);
       const recommendation = await aiService.current.generateRecommendation(userProfile, marketData);
       
-      setState(prev => ({
-        ...prev,
+      setState(previousState => ({
+        ...previousState,
         isProcessing: false,
         currentRecommendation: recommendation,
         lastUpdate: new Date()
@@ -107,11 +108,11 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
 
       onRecommendation?.(recommendation);
 
-      // Add welcome message
+      // Add welcome message from the AI assistant
       addAIMessage('Hello! I\'m your AI trading assistant. I can provide personalized recommendations, market insights, and answer your trading questions. How can I help you today?');
     } catch (error) {
       console.error('AI initialization failed:', error);
-      setState(prev => ({ ...prev, isProcessing: false }));
+      setState(previousState => ({ ...previousState, isProcessing: false }));
       addAIMessage('I apologize, but I\'m having trouble initializing. Please try again later.');
     }
   };
@@ -120,8 +121,8 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
     try {
       const insights = await aiService.current.generateInsights([], userProfile);
       
-      setState(prev => ({
-        ...prev,
+      setState(previousState => ({
+        ...previousState,
         insights,
         lastUpdate: new Date()
       }));
@@ -135,6 +136,9 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
     }
   };
 
+  /**
+   * Handles sending a user message and processing the AI response.
+   */
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || state.isProcessing) return;
 
@@ -143,7 +147,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
     addUserMessage(userMessage);
 
     try {
-      setState(prev => ({ ...prev, isProcessing: true }));
+      setState(previousState => ({ ...previousState, isProcessing: true }));
 
       const query: AIQuery = {
         type: determineQueryType(userMessage),
@@ -153,13 +157,13 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
 
       const response = await aiService.current.processQuery(query, userProfile);
       
-      setState(prev => ({
-        ...prev,
+      setState(previousState => ({
+        ...previousState,
         isProcessing: false,
         lastUpdate: new Date()
       }));
 
-      // Handle different response types
+      // Handle different response types accordingly
       if (query.type === 'recommendation' && response.response) {
         onRecommendation?.(response.response);
         addAIMessageWithRecommendation(
@@ -171,7 +175,7 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
       }
     } catch (error) {
       console.error('Message processing failed:', error);
-      setState(prev => ({ ...prev, isProcessing: false }));
+      setState(previousState => ({ ...previousState, isProcessing: false }));
       addAIMessage('I apologize, but I encountered an error processing your request. Please try again.');
     }
   };

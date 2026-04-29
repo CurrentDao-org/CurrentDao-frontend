@@ -17,15 +17,19 @@ interface EarningsChartProps {
   isLoading?: boolean;
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
+/**
+ * Custom Tooltip component for the Earnings Chart.
+ * Displays the date and formatted earnings value.
+ */
+const CustomTooltip = ({ active, payload: chartPayload, label }: any) => {
+  if (active && chartPayload && chartPayload.length) {
     return (
       <div className="rounded-lg border border-border bg-card p-4 shadow-xl ring-1 ring-black/5">
         <p className="text-sm font-semibold text-foreground">{label}</p>
         <div className="mt-1 flex items-center justify-between gap-4">
           <span className="text-sm text-muted-foreground whitespace-nowrap">Earnings:</span>
           <span className="text-sm font-bold text-blue-500 whitespace-nowrap">
-            ${payload[0].value.toFixed(2)}
+            ${chartPayload[0].value.toFixed(2)}
           </span>
         </div>
       </div>
@@ -34,9 +38,14 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+/**
+ * EarningsChart component that renders a bar chart of portfolio earnings.
+ * Uses recharts for visualization.
+ */
 const EarningsChart: React.FC<EarningsChartProps> = ({ data, isLoading }) => {
   const [isMounted, setIsMounted] = useState(false);
 
+  // Set isMounted to true on initial mount to avoid hydration mismatch with ResponsiveContainer
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -58,7 +67,10 @@ const EarningsChart: React.FC<EarningsChartProps> = ({ data, isLoading }) => {
       </div>
       <div className="h-[280px] w-full lg:h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+          <BarChart 
+            data={data} 
+            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+          >
             <CartesianGrid
               strokeDasharray="3 3"
               vertical={false}

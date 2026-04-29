@@ -16,6 +16,9 @@ import {
   AIPerformance
 } from '../types/ai';
 
+/**
+ * Options for the useAIAssistant hook.
+ */
 interface UseAIAssistantOptions {
   userProfile: AIUserProfile;
   enabled?: boolean;
@@ -24,6 +27,9 @@ interface UseAIAssistantOptions {
   updateInterval?: number; // in seconds
 }
 
+/**
+ * Return type for the useAIAssistant hook.
+ */
 interface UseAIAssistantReturn {
   // State
   state: AIAssistantState;
@@ -46,6 +52,10 @@ interface UseAIAssistantReturn {
   refreshData: () => Promise<void>;
 }
 
+/**
+ * Custom hook for interacting with the AI Trading Assistant service.
+ * Manages state, real-time updates, and learning functionality.
+ */
 export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantReturn {
   const {
     userProfile,
@@ -55,7 +65,7 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
     updateInterval = 30
   } = options;
 
-  // State management
+  // State management for the assistant's operational status
   const [state, setState] = useState<AIAssistantState>({
     isActive: false,
     isProcessing: false,
@@ -76,12 +86,12 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
   const [recommendations, setRecommendations] = useState<TradingRecommendation[]>([]);
   const [insights, setInsights] = useState<MarketInsight[]>([]);
 
-  // Services and refs
+  // Services and refs for managing side effects
   const aiService = useRef(AIService.getInstance());
   const updateIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialized = useRef(false);
 
-  // Initialize AI assistant
+  // Initialize AI assistant when enabled or user profile changes
   useEffect(() => {
     if (enabled && userProfile && !isInitialized.current) {
       initializeAI();
@@ -94,7 +104,7 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
     };
   }, [enabled, userProfile]);
 
-  // Set up real-time updates
+  // Set up real-time updates interval
   useEffect(() => {
     if (enabled && realTimeUpdates && isInitialized.current) {
       updateIntervalRef.current = setInterval(() => {
@@ -111,16 +121,16 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
 
   const initializeAI = async () => {
     try {
-      setState(prev => ({ ...prev, isActive: true, isProcessing: true, userProfile }));
+      setState(prevState => ({ ...prevState, isActive: true, isProcessing: true, userProfile }));
 
-      // Generate initial recommendation and insights
+      // Generate initial recommendation and insights in parallel
       const [initialRecommendation, initialInsights] = await Promise.all([
         aiService.current.generateRecommendation(userProfile, []),
         aiService.current.generateInsights([], userProfile)
       ]);
 
-      setState(prev => ({
-        ...prev,
+      setState(prevState => ({
+        ...prevState,
         isProcessing: false,
         currentRecommendation: initialRecommendation,
         insights: initialInsights,
@@ -133,7 +143,7 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
 
     } catch (error) {
       console.error('AI initialization failed:', error);
-      setState(prev => ({ ...prev, isProcessing: false }));
+      setState(prevState => ({ ...prevState, isProcessing: false }));
     }
   };
 
@@ -146,16 +156,16 @@ export function useAIAssistant(options: UseAIAssistantOptions): UseAIAssistantRe
         aiService.current.generateInsights([], userProfile)
       ]);
 
-      setState(prev => ({
-        ...prev,
+      setState(prevState => ({
+        ...prevState,
         currentRecommendation: newRecommendation,
         insights: newInsights,
         lastUpdate: new Date(),
         performance: aiService.current.getPerformance()
       }));
 
-      setRecommendations(prev => [newRecommendation, ...prev].slice(0, 10));
-      setInsights(prev => [...newInsights, ...prev].slice(0, 50));
+      setRecommendations(prevState => [newRecommendation, ...prevState].slice(0, 10));
+      setInsights(prevState => [...newInsights, ...prevState].slice(0, 50));
 
     } catch (error) {
       console.error('Real-time update failed:', error);
