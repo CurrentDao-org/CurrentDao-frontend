@@ -1,23 +1,79 @@
 'use client'
 
-import React from 'react'
-import { FeeAlert } from '@/types/gas'
-import { formatTime } from '@/utils/gasCalculations'
-import { Bell, BellOff, TrendingUp, TrendingDown, Clock, AlertTriangle, CheckCircle } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { FeeAlert, GasFeeEstimate } from '@/types/gas'
+import { formatTime, formatFee } from '@/utils/gasCalculations'
+import { Bell, BellOff, TrendingUp, TrendingDown, Clock, AlertTriangle, CheckCircle, Settings, X } from 'lucide-react'
+
+interface FeeAlertThreshold {
+  id: string
+  type: 'fee_drop' | 'congestion_spike' | 'optimal_window'
+  enabled: boolean
+  threshold?: number
+  name: string
+  description: string
+}
 
 interface FeeAlertsProps {
   alerts: FeeAlert[]
+  currentFee?: GasFeeEstimate | null
   onAcknowledge?: (alertId: string) => void
   onDismiss?: (alertId: string) => void
+  onThresholdUpdate?: (thresholds: FeeAlertThreshold[]) => void
   className?: string
 }
 
 export const FeeAlerts: React.FC<FeeAlertsProps> = ({ 
   alerts, 
+  currentFee,
   onAcknowledge,
   onDismiss,
+  onThresholdUpdate,
   className = ''
 }) => {
+  const [showSettings, setShowSettings] = useState(false)
+  const [thresholds, setThresholds] = useState<FeeAlertThreshold[]>([
+    {
+      id: 'fee_drop_10',
+      type: 'fee_drop',
+      enabled: true,
+      threshold: 10,
+      name: 'Fee Drop > 10%',
+      description: 'Notify when fees drop by more than 10%'
+    },
+    {
+      id: 'optimal_window',
+      type: 'optimal_window',
+      enabled: true,
+      name: 'Optimal Fee Window',
+      description: 'Notify about optimal transaction timing'
+    },
+    {
+      id: 'congestion_spike',
+      type: 'congestion_spike',
+      enabled: true,
+      name: 'Network Congestion',
+      description: 'Notify when network becomes highly congested'
+    }
+  ])
+
+  useEffect(() => {
+    if (onThresholdUpdate) {
+      onThresholdUpdate(thresholds)
+    }
+  }, [thresholds, onThresholdUpdate])
+
+  const toggleThreshold = (id: string) => {
+    setThresholds(prev => prev.map(threshold => 
+      threshold.id === id ? { ...threshold, enabled: !threshold.enabled } : threshold
+    ))
+  }
+
+  const updateThreshold = (id: string, threshold: number) => {
+    setThresholds(prev => prev.map(threshold => 
+      threshold.id === id ? { ...threshold, threshold } : threshold
+    ))
+  }
   const getAlertIcon = (type: FeeAlert['type']) => {
     switch (type) {
       case 'optimal_window':
