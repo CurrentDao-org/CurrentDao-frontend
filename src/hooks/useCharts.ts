@@ -9,6 +9,10 @@ interface UseChartProps extends ChartConfig {
   onPanChange?: (domain: any) => void;
 }
 
+/**
+ * Hook for managing chart configuration, dimensions, and interaction state.
+ * Supports responsive sizing, zoom, pan, and data point interactions.
+ */
 export const useChart = (props: UseChartProps = {}) => {
   const {
     width: propWidth,
@@ -35,7 +39,7 @@ export const useChart = (props: UseChartProps = {}) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
-  // Handle responsive sizing
+  // Handle responsive sizing when container or window size changes
   useEffect(() => {
     if (!responsive) {
       if (propWidth && propHeight) {
@@ -72,8 +76,8 @@ export const useChart = (props: UseChartProps = {}) => {
   const handleZoom = useCallback((domain: any) => {
     if (!zoomEnabled) return;
     
-    setInteractionState(prev => ({
-      ...prev,
+    setInteractionState(prevState => ({
+      ...prevState,
       isZoomed: true,
       zoomDomain: domain,
     }));
@@ -85,8 +89,8 @@ export const useChart = (props: UseChartProps = {}) => {
   const handlePan = useCallback((domain: any) => {
     if (!panEnabled) return;
     
-    setInteractionState(prev => ({
-      ...prev,
+    setInteractionState(prevState => ({
+      ...prevState,
       isPanning: true,
       zoomDomain: domain,
     }));

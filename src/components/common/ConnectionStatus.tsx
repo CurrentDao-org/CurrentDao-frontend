@@ -3,6 +3,9 @@ import { Wifi, WifiOff, AlertCircle, RefreshCw, Activity } from 'lucide-react';
 import { useConnectionStatus } from '@/hooks/useWebSocket';
 import { getConnectionStatusText, getConnectionStatusColor } from '@/utils/websocketHelpers';
 
+/**
+ * Props for the ConnectionStatus component.
+ */
 interface ConnectionStatusProps {
   showDetails?: boolean;
   showLatency?: boolean;
@@ -12,6 +15,10 @@ interface ConnectionStatusProps {
   onReconnect?: () => void;
 }
 
+/**
+ * Component to display the current WebSocket connection status,
+ * including latency and connection quality metrics.
+ */
 export function ConnectionStatus({
   showDetails = false,
   showLatency = false,
@@ -34,6 +41,9 @@ export function ConnectionStatus({
     }
   };
 
+  /**
+   * Formats latency in milliseconds or seconds based on the value.
+   */
   const formatLatency = (latency?: number) => {
     if (!latency) return '--';
     return latency < 1000 ? `${latency}ms` : `${(latency / 1000).toFixed(1)}s`;
@@ -118,8 +128,8 @@ export function ConnectionStatus({
         <div className="flex items-center gap-2">
           {connectionState.status === 'error' && (
             <button
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 handleReconnect();
               }}
               className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
