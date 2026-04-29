@@ -4,6 +4,8 @@ export { LineChart } from './LineChart';
 export { BarChart } from './BarChart';
 export { PieChart } from './PieChart';
 export { AreaChart } from './AreaChart';
+export { default as EnergyHeatmap } from './EnergyHeatmap';
+export { default as EnergyHeatmapSimple } from './EnergyHeatmapSimple';
 
 // Chart Types
 export type {
@@ -25,7 +27,18 @@ export type {
   EnergyTradingData,
   MarketTrendData,
   UserAnalyticsData,
-} from '@/types/charts';
+} from '../../types/charts';
+
+// Heatmap Types
+export type {
+  HeatmapDataPoint,
+  HeatmapData,
+  HeatmapViewType,
+  HeatmapTooltipData,
+  HeatmapInteractionState,
+  HeatmapConfig,
+  HeatmapExportOptions,
+} from '../../types/heatmap';
 
 // Chart Utilities
 export {
@@ -44,7 +57,15 @@ export {
   validateChartData,
   getColorScale,
   getResponsiveConfig,
-} from '@/utils/chartHelpers';
+} from '../../utils/chartHelpers';
+
+// Heatmap Utilities
+export {
+  generateMockHeatmapData,
+  exportHeatmapToCSV,
+  formatChartValue as formatHeatmapValue,
+  formatChartDate as formatHeatmapDate,
+} from '../../utils/heatmapHelpersSimple';
 
 // Chart Hooks
 export {
@@ -54,4 +75,4 @@ export {
   useChartKeyboardNavigation,
   useChartPerformance,
   useChartAccessibility,
-} from '@/hooks/useCharts';
+} from '../../hooks/useCharts';
