@@ -45,6 +45,7 @@ class PerformanceMonitor {
   private onMetricCallback?: (entry: PerformanceEntry) => void;
 
   constructor() {
+    if (typeof window === 'undefined') return;
     this.initWebVitals();
     this.initCustomMetrics();
   }

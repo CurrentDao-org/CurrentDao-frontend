@@ -403,7 +403,7 @@ export class TreasuryHelpers {
     const monthlyBurnRate = this.calculateMonthlyBurnRate(transactions);
     const liquidityRisk = monthlyBurnRate > 0 ? (monthlyBurnRate / totalBalance) * 100 : 0;
 
-    const variances = funds.map(fund => Math.abs(f.spentAmount - fund.allocatedAmount));
+    const variances = funds.map(fund => Math.abs(fund.spentAmount - fund.allocatedAmount));
     const budgetVariance = variances.length > 0 
       ? (variances.reduce((sum, variance) => sum + variance, 0) / variances.length) / totalAllocated * 100 
       : 0;
