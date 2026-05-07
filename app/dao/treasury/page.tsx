@@ -1,7 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
+
 import React, { useState, Suspense } from "react";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import {
   LayoutDashboard,
   PieChart,
@@ -19,7 +22,7 @@ import { LoadingSkeleton } from "../../../components/loading/LoadingSkeleton";
 import { usePrefetchRoute } from "../../../utils/routeLoader";
 
 // Dynamic imports for route-level code splitting
-const TreasuryDashboard = dynamic(
+const TreasuryDashboard = dynamicImport(
   () =>
     import("../../../components/treasury/TreasuryDashboard").then((mod) => ({
       default: mod.TreasuryDashboard,
@@ -30,7 +33,7 @@ const TreasuryDashboard = dynamic(
   },
 );
 
-const FundAllocation = dynamic(
+const FundAllocation = dynamicImport(
   () =>
     import("../../../components/treasury/FundAllocation").then((mod) => ({
       default: mod.FundAllocation,
@@ -41,7 +44,7 @@ const FundAllocation = dynamic(
   },
 );
 
-const BudgetTracking = dynamic(
+const BudgetTracking = dynamicImport(
   () =>
     import("../../../components/treasury/BudgetTracking").then((mod) => ({
       default: mod.BudgetTracking,
@@ -52,7 +55,7 @@ const BudgetTracking = dynamic(
   },
 );
 
-const SpendingProposals = dynamic(
+const SpendingProposals = dynamicImport(
   () =>
     import("../../../components/treasury/SpendingProposals").then((mod) => ({
       default: mod.SpendingProposals,
@@ -63,7 +66,7 @@ const SpendingProposals = dynamic(
   },
 );
 
-const FinancialAnalytics = dynamic(
+const FinancialAnalytics = dynamicImport(
   () =>
     import("../../../components/treasury/FinancialAnalytics").then((mod) => ({
       default: mod.FinancialAnalytics,

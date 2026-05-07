@@ -60,9 +60,9 @@ export async function GET(request: NextRequest) {
     } catch (error) {
       // npm outdated returns non-zero exit code when packages are outdated
       // but still outputs the JSON data
-      if (error.stdout) {
+      if ((error as any).stdout) {
         try {
-          outdatedData = JSON.parse(error.stdout);
+          outdatedData = JSON.parse((error as any).stdout);
         } catch {
           // Ignore parsing errors
         }

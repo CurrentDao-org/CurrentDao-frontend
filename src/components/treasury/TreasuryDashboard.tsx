@@ -22,7 +22,7 @@ interface TreasuryDashboardProps {
 }
 
 export const TreasuryDashboard: React.FC<TreasuryDashboardProps> = ({ treasuryId }) => {
-  const { state, getFilteredProposals, getFilteredFunds } = useTreasury({ treasuryId });
+  const { state, getFilteredProposals, getFilteredFunds, getTreasuryAnalytics } = useTreasury({ treasuryId });
 
   const metrics = state.metrics;
   const recentProposals = getFilteredProposals()

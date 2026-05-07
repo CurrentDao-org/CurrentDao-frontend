@@ -246,7 +246,7 @@ export const TradingHistory: React.FC<TradingHistoryProps> = ({
                   className="flex items-center hover:text-gray-700"
                 >
                   Date & Time
-                  {sortBy === 'timestamp && (
+                  {sortBy === 'timestamp' && (
                     <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
                   )}
                 </button>

@@ -153,7 +153,7 @@ export const generateHistoricalData = (days: number = 30): HistoricalFeeData[] =
 }
 
 export const calculateGasFee = (inputs: GasCalculatorInputs): GasCalculatorResult => {
-  const { gasLimit, gasPrice, priorityFee = 0, complexity, network } => {
+  const { gasLimit, gasPrice, priorityFee = 0, complexity, network } = inputs;
     // Adjust gas limit based on complexity
     const adjustedGasLimit = gasLimit * (complexity === 'simple' ? 1 : complexity === 'medium' ? 1.2 : 1.5)
     
@@ -195,7 +195,6 @@ export const calculateGasFee = (inputs: GasCalculatorInputs): GasCalculatorResul
       estimatedTime,
       recommendations
     }
-  }
 }
 
 export const formatFee = (fee: number, asset: string = 'XLM'): string => {

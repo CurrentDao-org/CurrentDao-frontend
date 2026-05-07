@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { 
   NotificationSubscription, 
   PushNotificationPayload,
-  Notification 
+  Notification as AppNotification
 } from '../types/notifications';
 
 interface UsePushNotificationsReturn {

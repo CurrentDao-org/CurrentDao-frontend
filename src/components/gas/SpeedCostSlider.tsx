@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { SpeedCostOption } from '@/types/gas'
 import { formatFee, formatTime } from '@/utils/gasCalculations'
-import { Turtle, Rabbit, Cheetah, Rocket, Clock, Zap } from 'lucide-react'
+import { Hourglass, Gauge, Zap, Rocket, Clock } from 'lucide-react'
 
 interface SpeedCostSliderProps {
   options: SpeedCostOption[]
@@ -13,9 +13,9 @@ interface SpeedCostSliderProps {
 }
 
 const iconMap = {
-  turtle: Turtle,
-  rabbit: Rabbit,
-  cheetah: Cheetah,
+  turtle: Hourglass,
+  rabbit: Gauge,
+  cheetah: Zap,
   rocket: Rocket
 }
 

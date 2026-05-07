@@ -1,7 +1,10 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
+
 import React, { useState, useEffect, Suspense } from "react";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 import { usePortfolioAnalytics } from "../../../hooks/usePortfolioAnalytics";
 import {
   LazyComponent,
@@ -15,7 +18,7 @@ import { portfolioApiCache } from "../../../services/cache/api-cache";
 import { usePrefetchRoute } from "../../../utils/routeLoader";
 
 // Dynamic imports for route-level code splitting
-const ProfitLoss = dynamic(
+const ProfitLoss = dynamicImport(
   () =>
     import("../../../components/portfolio/ProfitLoss").then((mod) => ({
       default: mod.ProfitLoss,
@@ -26,7 +29,7 @@ const ProfitLoss = dynamic(
   },
 );
 
-const AssetAllocation = dynamic(
+const AssetAllocation = dynamicImport(
   () =>
     import("../../../components/portfolio/AssetAllocation").then((mod) => ({
       default: mod.AssetAllocation,
@@ -37,7 +40,7 @@ const AssetAllocation = dynamic(
   },
 );
 
-const TradingStatistics = dynamic(
+const TradingStatistics = dynamicImport(
   () =>
     import("../../../components/portfolio/TradingStatistics").then((mod) => ({
       default: mod.TradingStatistics,

@@ -7,6 +7,7 @@ package-lock.json
 
 # testing
 /coverage
+/mobile/coverage
 
 # react native artifacts
 /mobile/ios/Pods
@@ -42,3 +43,13 @@ test-output.txt
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# backup / patch / archive files
+*.patch
+*.tar.gz
+*.bak
+package.json.*
+!package.json
+
+# ad-hoc scripts
+test-*.js

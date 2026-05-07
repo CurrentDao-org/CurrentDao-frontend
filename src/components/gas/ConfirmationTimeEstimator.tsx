@@ -3,7 +3,7 @@
 import React from 'react'
 import { SpeedCostOption } from '@/types/gas'
 import { formatFee, formatTime } from '@/utils/gasCalculations'
-import { Clock, Timer, Zap, Turtle, Rabbit, Cheetah, Rocket, BarChart3 } from 'lucide-react'
+import { Clock, Timer, Zap, Hourglass, Gauge, Rocket, BarChart3 } from 'lucide-react'
 
 interface ConfirmationTimeEstimatorProps {
   options: SpeedCostOption[]
@@ -52,11 +52,11 @@ export const ConfirmationTimeEstimator: React.FC<ConfirmationTimeEstimatorProps>
   const getIconForTier = (tier: string) => {
     switch (tier.toLowerCase()) {
       case 'slow':
-        return Turtle
+        return Hourglass
       case 'standard':
-        return Rabbit
+        return Gauge
       case 'fast':
-        return Cheetah
+        return Zap
       case 'maximum':
         return Rocket
       default:
@@ -302,7 +302,7 @@ export const ConfirmationTimeEstimator: React.FC<ConfirmationTimeEstimatorProps>
             <div>
               <div className="text-sm text-gray-600 mb-2">Most Economical</div>
               <div className="flex items-center">
-                <Turtle className="w-4 h-4 text-green-600 mr-2" />
+                <Hourglass className="w-4 h-4 text-green-600 mr-2" />
                 <span className="font-medium">{formatFee(Math.min(...timeEstimates.map(e => e.fee)))}</span>
                 <span className="text-gray-500 ml-2">
                   ({formatTime(Math.max(...timeEstimates.map(e => e.maxTime)))})
